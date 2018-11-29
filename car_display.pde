@@ -23,15 +23,16 @@ class carDisplay{
     sideMask = loadImage("vehicle/vehiclePic/"+carType+"/sideMask.png"),
     sideShine = loadImage("vehicle/vehiclePic/"+carType+"/sideShine.png")
     ;
-    this.framePos = ((framePos+1)%32);
+    this.framePos = ((framePos+1)%64);
     println(framePos);
     //if(random(10)>1)
     //  image(wheels,0,0);
     //else
     //  image(wheels,0,-1);
     //image(carBody,0,0);
-    sideShine.blend(sideMask,0,0,64,32,0,0,64,32,BLEND);
-    //sideShine.mask(sideMask);
+    sideShine.blend(sideShine,0,0,64,32,0-framePos,0,64,32,BLEND);
+    sideMask.filter(INVERT);
+    sideShine.mask(sideMask);
     image(sideShine,0,0);
   }
 }
