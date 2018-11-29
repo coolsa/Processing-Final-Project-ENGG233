@@ -9,13 +9,29 @@ class carDisplay{
   //this one is meant to do the car part. the big ol moving car. that fancy one.
   //part of it is the car, other part is the not-car.
   String carType;
-  int frame = 0; //this tells us what the offset from the origin is. this is going to change every render.
+  int framePos; //this tells us what the offset from the origin is. this is going to change every render.
   carDisplay(String car){
+    framePos=0;
     carType = car;
+    render();
   }
-  void render(String carType){
+  void render(){
+    scale(2,2);
+    println(framePos);
     PImage carBody = loadImage("vehicle/vehiclePic/"+carType+"/carBody.png"),
-    wheel1 = loadImage("vehicle/vehiclePic/"+carType+"/wheel"+(1+frame%2)+".png");
-    frame = (++frame%16);
+    wheels = loadImage("vehicle/vehiclePic/"+carType+"/wheel"+(1+(framePos/8)%2)+".png"),
+    sideMask = loadImage("vehicle/vehiclePic/"+carType+"/sideMask.png"),
+    sideShine = loadImage("vehicle/vehiclePic/"+carType+"/sideShine.png")
+    ;
+    this.framePos = ((framePos+1)%32);
+    println(framePos);
+    //if(random(10)>1)
+    //  image(wheels,0,0);
+    //else
+    //  image(wheels,0,-1);
+    //image(carBody,0,0);
+    sideShine.blend(sideMask,0,0,64,32,0,0,64,32,BLEND);
+    //sideShine.mask(sideMask);
+    image(sideShine,0,0);
   }
 }

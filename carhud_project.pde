@@ -48,7 +48,8 @@ void setup(){
   textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
   //if you couldnt tell from what i have so far, im heavily inspired by them 8/16/pixely games.
   //pushMatrix();
-  //car = new carStatus("truck");
+  car = new carStatus("minicar");
+  carDisplay = new carDisplay(car.vehicle.carType);
   //car.secondTick();//first render, make it so its not empty for the first frame.
   //popMatrix();
   
@@ -57,6 +58,7 @@ int second = second();
 String carSelect = "";
 boolean setup = false;
 void draw(){
+  carDisplay.render();
   //if(carSelect.equals("truck") && !setup){
   //  setup = true;
   //  car = new carStatus("truck");
