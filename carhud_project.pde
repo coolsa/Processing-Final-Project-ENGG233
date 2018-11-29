@@ -36,43 +36,49 @@ now for the view. i want to make it so that the display is pretty, right?
 so i have to load in images. thats a big part of this all. or have it read images like a bmp or something. 
 
 */
-fuelLevel fuel;
-carSpeed speedometer;
+
+//fuelLevel fuel;
+//carSpeed speedometer;
+carStatus car;
 void setup(){
   size(500,500);
   noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
-  textFont(createFont("font/PressStart2P-Regular.ttf",4));
-  //textSize(4);
-  //scale(4,4);
-  //text("ttest",77,77);
-  pushMatrix();
-  translate(50,50);
-  scale(2,2);
-  fuel = new fuelLevel(80);
-  speedometer = new carSpeed();
-  //fuel.render(20);
-  popMatrix();
+  textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
+  //if you couldnt tell from what i have so far, im heavily inspired by them 8/16/pixely games.
+  //pushMatrix();
+  //car = new carStatus("truck");
+  //car.secondTick();//first render, make it so its not empty for the first frame.
+  //popMatrix();
   
 }
-int asdf = 80;
+int second = second();
+String carSelect = "";
 void draw(){
-  clear();
-  background(0);
-  
-  
-  //fuel.render(80);
-  pushMatrix();
-  translate(319,300);
-  scale(2,2);
-  fuel.render(asdf--);
-  popMatrix();
-  pushMatrix();
-  translate(39,298);
-  scale(2,2);
-  speedometer.render(50);
-  popMatrix();
-  
-  //fuel.render(asdf--);
-  if(asdf<=0) asdf = 80;
+  if(carSelect.equals("truck"))
+    car = new carStatus("truck");
+  else if(carSelect.equals("minicar"))
+    car = new carStatus("minicar");
+  if(carSelect.equals("")){
+    scale(3,3);
+    background(0);
+    text("1. truck\n2.minicar\n3. exit",width/6,height/6);
+  }
+  else if(carSelect.equals("exit"))
+    exit();
+  else
+    if(second != second()){
+      //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
+      car.secondTick();
+      second = second();
+    }
+}
+
+void keyPressed(){
+  if(keyCode==49)
+    carSelect = "truck";
+  if(keyCode==50)
+    carSelect = "minicar";
+  if(keyCode==51)
+    carSelect = "exit";
 }

@@ -17,19 +17,21 @@ class vehicleData {
   //dont load the whole thing at once. think about the LIMITED MEMORY on an actual car computer. gotta cheap out yo.
   vehicleData(String carType){
     vehicle = loadTable("vehicle/car_status_"+carType+".csv","header");
-    rpm = new int[vehicle.getColumnCount()];
-    gearRatio = new float[vehicle.getColumnCount()];
-    fuelLevel = new float[vehicle.getColumnCount()];
-    longitude = new float[vehicle.getColumnCount()];
-    latitude = new float[vehicle.getColumnCount()];
-    time = 0;
+    rpm = new int[vehicle.getRowCount()];
+    gearRatio = new float[vehicle.getRowCount()];
+    fuelLevel = new float[vehicle.getRowCount()];
+    longitude = new float[vehicle.getRowCount()];
+    latitude = new float[vehicle.getRowCount()];
+    time = -1;
   }
   void timeStep(){
-    rpm[time] = vehicle.getInt(time,"RPM");
-    gearRatio[time] = vehicle.getFloat(time, "Gear Ratio");
-    fuelLevel[time] = vehicle.getFloat(time, "Fuel Level (liter)");
-    longitude[time] = vehicle.getFloat(time, "X");
-    latitude[time] = vehicle.getFloat(time, "Y");
-    time++;//now we have finished the time step, so move on by increasing by 1.
+    if(time < vehicle.getRowCount()-1){ //this is to stop errors.
+      time++;
+      rpm[time] = vehicle.getInt(time,"RPM");
+      gearRatio[time] = vehicle.getFloat(time, "Gear Ratio");
+      fuelLevel[time] = vehicle.getFloat(time, "Fuel Level (liter)");
+      longitude[time] = vehicle.getFloat(time, "X");
+      latitude[time] = vehicle.getFloat(time, "Y");//now we have finished the time step, so move on by increasing by 1.
+    }
   }
 }

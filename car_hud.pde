@@ -8,8 +8,14 @@ if i have time & will i might.
 */
 
 class carHud{ //this is split into other parts, one for fuel, one for speed, one for 
-  fuelLevel fuelStats;
-  
+  fuelLevel fuel;
+  carSpeed speed;
+  carRPM rpm;
+  carHud(float maxFuel){
+    fuel = new fuelLevel(maxFuel);
+    speed = new carSpeed();
+    rpm = new carRPM();
+  }
 }
 class carSpeed{
   void render(float speed){
