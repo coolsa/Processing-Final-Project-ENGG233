@@ -34,7 +34,7 @@ class vehicleData {
       fuelLevel[time] = vehicle.getFloat(time, "Fuel Level (liter)");
       longitude[time] = vehicle.getFloat(time, "X");
       latitude[time] = vehicle.getFloat(time, "Y");//now we have finished the time step, so move on by increasing by 1.
-      println(latitude[time] + "," + longitude[time]);
+      //println(latitude[time] + "," + longitude[time]);
     }
   }
 }

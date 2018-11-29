@@ -31,7 +31,7 @@ class carStatus {
     //so m/s to km/h = (m*1000) over (seconds to hour = seconds to minutes to hours... seconds / 60 / 60
     speed = speed*1000.0/(60*60); //so this is speed in km/h.
   }
-  void hudUpdate(float fuel, int rpm, float speed) {
+  void hudUpdate(float fuel, int rpm, float speed, float x, float y) {
     clear();
     background(12);
     pushMatrix();
@@ -51,11 +51,17 @@ class carStatus {
     scale(2, 2);
     hud.speed.render(speed);
     popMatrix();
+    
+    pushMatrix();
+    translate(width/2-64, height/2-64);
+    scale(2, 2);
+    hud.gps.render(y,x);
+    popMatrix();
   }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
-    hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed);
+    hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
   }
 }

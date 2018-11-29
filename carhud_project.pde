@@ -41,6 +41,7 @@ so i have to load in images. thats a big part of this all. or have it read image
 //carSpeed speedometer;
 carStatus car;
 carDisplay carDisplay;
+carGPS gps;
 void setup(){
   size(512,512);
   noStroke();
@@ -52,6 +53,7 @@ void setup(){
   carDisplay = new carDisplay(car.vehicle.carType);
   //car.secondTick();//first render, make it so its not empty for the first frame.
   //popMatrix();
+  gps = new carGPS();
   
 }
 int second = second();
@@ -59,6 +61,7 @@ String carSelect = "";
 boolean setup = false;
 void draw(){
   carDisplay.render();
+  //gps.render(50.91, -113.91);
   //if(carSelect.equals("truck") && !setup){
   //  setup = true;
   //  car = new carStatus("truck");
@@ -75,7 +78,8 @@ void draw(){
   //else if(carSelect.equals("exit"))
   //  exit();
   //else
-  //  if(second != second()){
+  //{
+  //  //if(second == second()){
   //    //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
   //    car.secondTick();
   //    //println("asdfasdf");

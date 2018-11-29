@@ -11,12 +11,34 @@ class carHud{ //this is split into other parts, one for fuel, one for speed, one
   fuelLevel fuel;
   carSpeed speed;
   carRPM rpm;
+  carGPS gps;
   carHud(float maxFuel){
     fuel = new fuelLevel(maxFuel);
     speed = new carSpeed();
     rpm = new carRPM();
+    gps = new carGPS();
   }
 }
+
+class carGPS{
+  //so using hardcoded values for the top right and bottom left should be ok.
+  //top right 51.215882,-114.348209
+  //bottom left 50.816416,-113.716145
+  float[] maxPos = {51.215882,-114.348209};
+  float[] minPos = {50.816416,-113.716145};
+  float[] posDifference = {maxPos[0]-minPos[0],maxPos[1]-minPos[1]};
+  PImage gpsX = loadImage("calgary/gpsX.png"),
+  calgaryMap = loadImage("calgary/calgaryMap.png"); //a 96x96 image.
+  //so in relation to the position, then scale it down? something like that.
+  //i bet it must do something with the difference between the corners, the difference from the max pos and given pos, and the size of the image.
+  void render(float x, float y){
+    float diffX = maxPos[0]-x, diffY = maxPos[1]-y;
+    image(calgaryMap,96/2-(diffX/posDifference[0])*96,96/2-(diffY/posDifference[1])*96);
+    //println(diffX/posDifference[0]);
+    image(gpsX,0,0);
+  }
+}
+
 class carSpeed{
   void render(float speed){
     PImage speedometer = loadImage("vehicle/dashboard/speedometerBack.png");

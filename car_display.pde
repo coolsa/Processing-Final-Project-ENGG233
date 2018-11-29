@@ -28,31 +28,21 @@ class carDisplay{
     topShine = loadImage("vehicle/vehiclePic/"+carType+"/topShine.png"),
     frontMask = loadImage("vehicle/vehiclePic/"+carType+"/frontMask.png"),
     frontShine = loadImage("vehicle/vehiclePic/"+carType+"/frontShine.png"),
-    pureShine = loadImage("vehicle/vehiclePic/"+carType+"/pureShine.png")
+    pureDark = loadImage("vehicle/vehiclePic/"+carType+"/pureShine.png")
     ;
     this.framePos = ((framePos+1)%64);
-    //if(random(10)>1)
-    //  image(wheels,0,0);
-    //else
-    //  image(wheels,0,-1);
-    //topShine.blend(topShine,0,0,64,32,0-2*framePos,0,64,32,BLEND);
-    //topMask.filter(THRESHOLD,0.5);
-    //topShine.mask(topMask);
-    //topMask.mask(topMask);
+    if(random(10)>1)
+      image(wheels,0,0);
+    else
+      image(wheels,0,-1);
+    pureDark.filter(INVERT);
+    pureDark.filter(THRESHOLD);
     topMask.filter(INVERT);
-    topMask.blend(topShine,0,0,64,32,0-framePos,0,64,32,ADD);
-    //topMask.mask(topMask2);
-    //topMask.filter(INVERT);
-    //topShine.mask(topShine);
-    //topShine.mask(topMask2);
-    pureShine.mask(topMask);
-    pureShine.blend(topMask2,0,0,64,32,0,0,64,32,MULTIPLY);
-    //topMask2.filter(THRESHOLD);
-    pureShine.mask(topMask2);
-    image(topMask,0,0);
-    image(topMask2,64,0);
-    image(pureShine,128,0);
-    //carBody.blend(topShine,0,0,64,32,0,0,64,32,LIGHTEST);
+    pureDark.blend(topShine,0,0,64,32,0-(framePos+10)%64,0,64,32,ADD);
+    
+    topMask.filter(INVERT);
+    pureDark.mask(topMask);
+    carBody.blend(pureDark,0,0,64,32,0,0,64,32,LIGHTEST);
     
     
     frontShine.blend(frontShine,0,0,64,32,0-framePos,0,64,32,BLEND);
@@ -61,6 +51,6 @@ class carDisplay{
     sideShine.blend(sideShine,0,0,64,32,0-framePos,0,64,32,BLEND);
     sideShine.mask(sideMask);
     carBody.blend(sideShine,0,0,64,32,0,0,64,32,LIGHTEST);
-    image(carBody,0,32);
+    image(carBody,0,0);
   }
 }
