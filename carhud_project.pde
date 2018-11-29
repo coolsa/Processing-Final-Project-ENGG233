@@ -37,30 +37,42 @@ so i have to load in images. thats a big part of this all. or have it read image
 
 */
 fuelLevel fuel;
+carSpeed speedometer;
 void setup(){
   size(500,500);
   noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
-  
-  
-  textFont(createFont("font/PressStart2P-Regular.ttf",16));
-  textSize(4);
-  scale(4,4);
-  text("ttest",77,77);
+  textFont(createFont("font/PressStart2P-Regular.ttf",4));
+  //textSize(4);
+  //scale(4,4);
+  //text("ttest",77,77);
   pushMatrix();
-  fuel = new fuelLevel(80,50);
-  fuel.render(20);
+  translate(50,50);
+  scale(2,2);
+  fuel = new fuelLevel(80);
+  speedometer = new carSpeed();
+  //fuel.render(20);
   popMatrix();
   
 }
 int asdf = 80;
 void draw(){
   clear();
-  background(0xff);
+  background(0);
   
   
-  scale(5,5);
   //fuel.render(80);
+  pushMatrix();
+  translate(319,300);
+  scale(2,2);
   fuel.render(asdf--);
-  if(asdf<=0) asdf = 0;
+  popMatrix();
+  pushMatrix();
+  translate(39,298);
+  scale(2,2);
+  speedometer.render(50);
+  popMatrix();
+  
+  //fuel.render(asdf--);
+  if(asdf<=0) asdf = 80;
 }

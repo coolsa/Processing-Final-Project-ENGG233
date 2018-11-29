@@ -8,16 +8,29 @@ if i have time & will i might.
 */
 
 class carHud{ //this is split into other parts, one for fuel, one for speed, one for 
+  fuelLevel fuelStats;
   
+}
+class carSpeed{
+  void render(float speed){
+    PImage speedometer = loadImage("vehicle/dashboard/speedometerBack.png");
+    image(speedometer,0,0);
+    text(nfc(speed,3)+" KM/H",13,28,44,35);
+  }
+}
+class carRPM{
+  void render(float rpm){ //currently just a modification of the speedometer, but will be updated in soon.
+    PImage speedometer = loadImage("vehicle/dashboard/speedometerBack.png");
+    image(speedometer,0,0);
+    text(nfc(rpm,3)+" RPM",13,28,44,35);
+  }
 }
 class fuelLevel{
   float maxFuel,fuelLevel;
-  fuelLevel(float maxFuel,float fuelLevel){
+  fuelLevel(float maxFuel){
     this.maxFuel = maxFuel;
-    this.fuelLevel = fuelLevel;
   }
   void render(float fuelLevel){
-    this.fuelLevel = fuelLevel;
     PImage fuelBack = loadImage("vehicle/dashboard/fuelBack.png"),
     fuelMask = loadImage("vehicle/dashboard/fuelMask.png"),
     fuelColours = loadImage("vehicle/dashboard/fuelColours.png"),
@@ -35,7 +48,7 @@ class fuelLevel{
     fuelBack.blend(fuelLight,0,0,64,64,0,0,64,64,BLEND);
     fuelBack.blend(fuelColours,0,0,64,64,0,0,64,64,BLEND);
     image(fuelBack,0,0);
-    text(nf(fuelLevel,2,1)+"L/\n"+nf(maxFuel,2,1)+"L",8,16,23,30);
+    text(nfc(fuelLevel,1)+"L\n/\n"+nfc(maxFuel,1)+"L",8,16,23,30);
     //text("test",15,15);
   }
 }

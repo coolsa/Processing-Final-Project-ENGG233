@@ -7,6 +7,7 @@ class carStatus{
   //and truck = Truck_F150
   //otherwise default to minicar i guess.
   float radius, tankCapacity; //radius of wheel, tank size in litres.
+  float speed; //speed in km/h
   vehicleData vehicle;
   
   carStatus(String carType){
@@ -20,5 +21,8 @@ class carStatus{
       radius = 23;
       tankCapacity = 60;
     }
+  }
+  void updateSpeed(int rpm, float gearRatio){
+    speed = (rpm/60.0)*(1/gearRatio)*2*PI*radius;
   }
 }
