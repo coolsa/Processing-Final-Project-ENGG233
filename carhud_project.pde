@@ -60,31 +60,32 @@ int second = second();
 String carSelect = "";
 boolean setup = false;
 void draw(){
-  carDisplay.render();
   //gps.render(50.91, -113.91);
-  //if(carSelect.equals("truck") && !setup){
-  //  setup = true;
-  //  car = new carStatus("truck");
-  //}
-  //else if(carSelect.equals("minicar") && !setup){
-  //  car = new carStatus("minicar");
-  //  setup = true;
-  //}
-  //if(carSelect.equals("") && !setup){
-  //  scale(3,3);
-  //  background(0);
-  //  text("1. truck\n2.minicar\n3. exit",width/6,height/6);
-  //}
-  //else if(carSelect.equals("exit"))
-  //  exit();
-  //else
-  //{
-  //  //if(second == second()){
-  //    //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
-  //    car.secondTick();
-  //    //println("asdfasdf");
-  //    second = second();
-  //  }
+  if(carSelect.equals("truck") && !setup){
+    setup = true;
+    car = new carStatus("truck");
+  }
+  else if(carSelect.equals("minicar") && !setup){
+    car = new carStatus("minicar");
+    setup = true;
+  }
+  if(carSelect.equals("") && !setup){
+    scale(3,3);
+    background(0);
+    text("1. truck\n2.minicar\n3. exit",width/6,height/6);
+  }
+  else if(carSelect.equals("exit"))
+    exit();
+  else
+  {
+    //if(second == second()){
+      //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
+      car.secondTick();
+      carDisplay.render();
+      //println("asdfasdf");
+      second = second();
+    }
+    
 }
 
 void keyPressed(){
