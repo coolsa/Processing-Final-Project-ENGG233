@@ -35,6 +35,7 @@ class fuelLevel{
     fuelBack.blend(fuelLight,0,0,64,64,0,0,64,64,BLEND);
     fuelBack.blend(fuelColours,0,0,64,64,0,0,64,64,BLEND);
     image(fuelBack,0,0);
-    text(fuelLevel+"/"+maxFuel,0,0);
+    text(nf(fuelLevel,2,1)+"L/\n"+nf(maxFuel,2,1)+"L",8,16,23,30);
+    //text("test",15,15);
   }
 }

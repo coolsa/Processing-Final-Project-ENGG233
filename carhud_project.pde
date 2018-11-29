@@ -38,8 +38,8 @@ so i have to load in images. thats a big part of this all. or have it read image
 */
 fuelLevel fuel;
 void setup(){
-  noStroke();
   size(500,500);
+  noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
   
   
@@ -55,7 +55,11 @@ void setup(){
 }
 int asdf = 80;
 void draw(){
-  scale(4,4);
+  clear();
+  background(0xff);
+  
+  
+  scale(5,5);
   //fuel.render(80);
   fuel.render(asdf--);
   if(asdf<=0) asdf = 0;
