@@ -5,6 +5,7 @@
 class vehicleData {
   //this class contains all the information for the vehicle.
   //all of the vehicles have standard things: 
+  String carType;
   Table vehicle;
   int[] rpm;
   float[] gearRatio,fuelLevel,longitude,latitude;
@@ -15,7 +16,8 @@ class vehicleData {
   //allocated to time, gearRatio, fuelLevel, rpm, longitude, latitiude
   //Time column = time+1
   //dont load the whole thing at once. think about the LIMITED MEMORY on an actual car computer. gotta cheap out yo.
-  vehicleData(String carType){
+  vehicleData(String car){
+    this.carType = car;
     vehicle = loadTable("vehicle/car_status_"+carType+".csv","header");
     rpm = new int[vehicle.getRowCount()];
     gearRatio = new float[vehicle.getRowCount()];
@@ -32,6 +34,7 @@ class vehicleData {
       fuelLevel[time] = vehicle.getFloat(time, "Fuel Level (liter)");
       longitude[time] = vehicle.getFloat(time, "X");
       latitude[time] = vehicle.getFloat(time, "Y");//now we have finished the time step, so move on by increasing by 1.
+      println(latitude[time] + "," + longitude[time]);
     }
   }
 }

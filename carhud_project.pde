@@ -40,8 +40,9 @@ so i have to load in images. thats a big part of this all. or have it read image
 //fuelLevel fuel;
 //carSpeed speedometer;
 carStatus car;
+carDisplay carDisplay;
 void setup(){
-  size(500,500);
+  size(512,512);
   noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
   textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
@@ -56,28 +57,28 @@ int second = second();
 String carSelect = "";
 boolean setup = false;
 void draw(){
-  if(carSelect.equals("truck") && !setup){
-    setup = true;
-    car = new carStatus("truck");
-  }
-  else if(carSelect.equals("minicar") && !setup){
-    car = new carStatus("minicar");
-    setup = true;
-  }
-  if(carSelect.equals("") && !setup){
-    scale(3,3);
-    background(0);
-    text("1. truck\n2.minicar\n3. exit",width/6,height/6);
-  }
-  else if(carSelect.equals("exit"))
-    exit();
-  else
-    if(second != second()){
-      //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
-      car.secondTick();
-      //println("asdfasdf");
-      second = second();
-    }
+  //if(carSelect.equals("truck") && !setup){
+  //  setup = true;
+  //  car = new carStatus("truck");
+  //}
+  //else if(carSelect.equals("minicar") && !setup){
+  //  car = new carStatus("minicar");
+  //  setup = true;
+  //}
+  //if(carSelect.equals("") && !setup){
+  //  scale(3,3);
+  //  background(0);
+  //  text("1. truck\n2.minicar\n3. exit",width/6,height/6);
+  //}
+  //else if(carSelect.equals("exit"))
+  //  exit();
+  //else
+  //  if(second != second()){
+  //    //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
+  //    car.secondTick();
+  //    //println("asdfasdf");
+  //    second = second();
+  //  }
 }
 
 void keyPressed(){
