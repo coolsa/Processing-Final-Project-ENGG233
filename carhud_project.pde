@@ -38,20 +38,25 @@ so i have to load in images. thats a big part of this all. or have it read image
 */
 fuelLevel fuel;
 void setup(){
-  //thisVehicle vehicle = new thisVehicle("BMW_323i");
-  //so setup stuff here. init classes, the files, what file to run? etc.
-  //vehicle.timeStep();
-  //vehicle.timeStep();
+  noStroke();
   size(500,500);
   smooth(0); //gotta get them pixely feeeeeel.
+  
+  
+  textFont(createFont("font/PressStart2P-Regular.ttf",16));
+  textSize(4);
+  scale(4,4);
+  text("ttest",77,77);
   pushMatrix();
   fuel = new fuelLevel(80,50);
   fuel.render(20);
   popMatrix();
   
 }
-int asdf = 100;
+int asdf = 80;
 void draw(){
-  fuel.render(80);
-  //fuel.render(asdf--);
+  scale(4,4);
+  //fuel.render(80);
+  fuel.render(asdf--);
+  if(asdf<=0) asdf = 0;
 }

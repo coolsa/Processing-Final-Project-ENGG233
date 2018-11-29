@@ -24,13 +24,17 @@ class fuelLevel{
     fuelLight = loadImage("vehicle/dashboard/fuelLight.png"),
     fuelLightMask= loadImage("vehicle/dashboard/fuelLightMask.png");
     
-    fuelBack = loadImage("vehicle/dashboard/fuelBack.png");
-    fuelMask = loadImage("vehicle/dashboard/fuelMask.png");
-    fuelColours = loadImage("vehicle/dashboard/fuelColours.png");
     fuelMask.filter(THRESHOLD,(fuelLevel/maxFuel)%(256.0/255)); //to make things a bit more regular.
     fuelMask.filter(INVERT);
     fuelColours.mask(fuelMask);
+    
+    //fuelLightMask.filter(INVERT);
+    fuelLightMask.filter(THRESHOLD,((fuelLevel+0.5)/maxFuel)%1); //feels a bit hacky, but hey, the display works. ish.
+    //fuelLightMask.filter(INVERT);
+    fuelLight.mask(fuelLightMask);
+    fuelBack.blend(fuelLight,0,0,64,64,0,0,64,64,BLEND);
     fuelBack.blend(fuelColours,0,0,64,64,0,0,64,64,BLEND);
     image(fuelBack,0,0);
+    text(fuelLevel+"/"+maxFuel,0,0);
   }
 }
