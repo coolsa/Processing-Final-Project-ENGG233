@@ -53,6 +53,7 @@ class carStatus{
     popMatrix();
   }
   void secondTick(){
+    println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time],vehicle.gearRatio[vehicle.time]);
     hudUpdate(vehicle.fuelLevel[vehicle.time],vehicle.rpm[vehicle.time],speed);

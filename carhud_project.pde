@@ -54,24 +54,31 @@ void setup(){
 }
 int second = second();
 String carSelect = "";
+boolean setup = false;
 void draw(){
-  if(carSelect.equals("truck"))
+  if(carSelect.equals("truck") && !setup){
+    setup = true;
     car = new carStatus("truck");
-  else if(carSelect.equals("minicar"))
+  }
+  else if(carSelect.equals("minicar") && !setup){
     car = new carStatus("minicar");
-  if(carSelect.equals("")){
+    setup = true;
+  }
+  if(carSelect.equals("") && !setup){
     scale(3,3);
     background(0);
     text("1. truck\n2.minicar\n3. exit",width/6,height/6);
   }
   else if(carSelect.equals("exit"))
     exit();
-  else
+  else{
     if(second != second()){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.secondTick();
+      //println("asdfasdf");
       second = second();
     }
+  }
 }
 
 void keyPressed(){
