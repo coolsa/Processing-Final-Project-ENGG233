@@ -36,40 +36,22 @@ now for the view. i want to make it so that the display is pretty, right?
 so i have to load in images. thats a big part of this all. or have it read images like a bmp or something. 
 
 */
+fuelLevel fuel;
 void setup(){
   //thisVehicle vehicle = new thisVehicle("BMW_323i");
   //so setup stuff here. init classes, the files, what file to run? etc.
   //vehicle.timeStep();
   //vehicle.timeStep();
   size(500,500);
-  //pushMatrix();
-  //background(00);
-  //popMatrix();
+  smooth(0); //gotta get them pixely feeeeeel.
   pushMatrix();
-  PImage fuelMask,fuelBack,fuelLight,fuelColours;
-  //scale(4);
-  //smooth(0);
-  //noStroke();
-  fuelBack = loadImage("vehicle/dashboard/fuelBack.png");
-  fuelMask = loadImage("vehicle/dashboard/fuelMask.png");
-  fuelColours = loadImage("vehicle/dashboard/fuelColours.png");
-  //background(fuelLight);
-  fuelMask.filter(THRESHOLD,256.0/256);
-  fuelMask.filter(INVERT);
-  fuelColours.mask(fuelMask);
-  fuelBack.blend(fuelColours,0,0,64,64,0,0,64,64,BLEND);
-  image(fuelBack,0,0);
-  //filter(THRESHOLD,60.0/256);
-  //filter(INVERT);
-  //blend(fuelColours,0,0,64,64,0,0,64,64,SUBTRACT);
-  //filter(INVERT);
-  //filter(INVERT);
-  //blend(fuelLight,0,0,64,64,0,0,64,64,SUBTRACT);
-  
+  fuel = new fuelLevel(80,50);
+  fuel.render(20);
   popMatrix();
   
-  //loadPixels();
-  //for(int i = 0; i < pixels.length-1; i++){
-  //  if(pixels[i] == color(255,255,255,0)) println(pixels[i]);
-  //}
+}
+int asdf = 100;
+void draw(){
+  fuel.render(80);
+  //fuel.render(asdf--);
 }

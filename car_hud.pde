@@ -11,15 +11,26 @@ class carHud{ //this is split into other parts, one for fuel, one for speed, one
   
 }
 class fuelLevel{
-  PImage fuelBack = loadImage("vehicle/dashboard/fuelBack.png"),
-  fuelMask = loadImage("vehicle/dashboard/fuelMask.png"),
-  fuelColours = loadImage("vehicle/dashboard/fuelColours.png"),
-  fuelLight = loadImage("vehicle/dashboard/fuelLight.png"),
-  fuelLightMask= loadImage("vehicle/dashboard/fuelLightMask.png");
   float maxFuel,fuelLevel;
-  
   fuelLevel(float maxFuel,float fuelLevel){
     this.maxFuel = maxFuel;
     this.fuelLevel = fuelLevel;
+  }
+  void render(float fuelLevel){
+    this.fuelLevel = fuelLevel;
+    PImage fuelBack = loadImage("vehicle/dashboard/fuelBack.png"),
+    fuelMask = loadImage("vehicle/dashboard/fuelMask.png"),
+    fuelColours = loadImage("vehicle/dashboard/fuelColours.png"),
+    fuelLight = loadImage("vehicle/dashboard/fuelLight.png"),
+    fuelLightMask= loadImage("vehicle/dashboard/fuelLightMask.png");
+    
+    fuelBack = loadImage("vehicle/dashboard/fuelBack.png");
+    fuelMask = loadImage("vehicle/dashboard/fuelMask.png");
+    fuelColours = loadImage("vehicle/dashboard/fuelColours.png");
+    fuelMask.filter(THRESHOLD,(fuelLevel/maxFuel)%(256.0/255)); //to make things a bit more regular.
+    fuelMask.filter(INVERT);
+    fuelColours.mask(fuelMask);
+    fuelBack.blend(fuelColours,0,0,64,64,0,0,64,64,BLEND);
+    image(fuelBack,0,0);
   }
 }
