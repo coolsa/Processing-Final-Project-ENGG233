@@ -17,22 +17,43 @@ class carDisplay{
   }
   void render(){
     scale(2,2);
-    println(framePos);
+    clear();
+    background(0xff00ff);
     PImage carBody = loadImage("vehicle/vehiclePic/"+carType+"/carBody.png"),
     wheels = loadImage("vehicle/vehiclePic/"+carType+"/wheel"+(1+(framePos/8)%2)+".png"),
     sideMask = loadImage("vehicle/vehiclePic/"+carType+"/sideMask.png"),
-    sideShine = loadImage("vehicle/vehiclePic/"+carType+"/sideShine.png")
+    sideShine = loadImage("vehicle/vehiclePic/"+carType+"/sideShine.png"),
+    topMask = loadImage("vehicle/vehiclePic/"+carType+"/topMask.png"),
+    topMask2 = loadImage("vehicle/vehiclePic/"+carType+"/topMask.png"),
+    topShine = loadImage("vehicle/vehiclePic/"+carType+"/topShine.png"),
+    frontMask = loadImage("vehicle/vehiclePic/"+carType+"/frontMask.png"),
+    frontShine = loadImage("vehicle/vehiclePic/"+carType+"/frontShine.png"),
+    pureShine = loadImage("vehicle/vehiclePic/"+carType+"/pureShine.png")
     ;
     this.framePos = ((framePos+1)%64);
-    println(framePos);
     //if(random(10)>1)
     //  image(wheels,0,0);
     //else
     //  image(wheels,0,-1);
-    //image(carBody,0,0);
+    frontShine.blend(frontShine,0,0,64,32,0-framePos,0,64,32,BLEND);
+    frontShine.mask(frontMask);
+    carBody.blend(frontShine,0,0,64,32,0,0,64,32,LIGHTEST);
+    //topShine.blend(topShine,0,0,64,32,0-2*framePos,0,64,32,BLEND);
+    //topMask.filter(THRESHOLD,0.5);
+    //topShine.mask(topMask);
+    //topMask.mask(topMask);
+    topMask.blend(topShine,0,0,64,32,0-framePos,0,64,32,ADD);
+    //topMask.mask(topMask2);
+    topMask.filter(INVERT);
+    //topShine.mask(topShine);
+    //topShine.mask(topMask2);
+    image(topMask,0,0);
+    image(topShine,64,0);
+    carBody.blend(topShine,0,0,64,32,0,0,64,32,LIGHTEST);
+    
     sideShine.blend(sideShine,0,0,64,32,0-framePos,0,64,32,BLEND);
-    sideMask.filter(INVERT);
     sideShine.mask(sideMask);
-    image(sideShine,0,0);
+    carBody.blend(sideShine,0,0,64,32,0,0,64,32,LIGHTEST);
+    //image(carBody,0,0);
   }
 }
