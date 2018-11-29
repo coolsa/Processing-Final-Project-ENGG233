@@ -17,8 +17,40 @@ class carDisplay{
   }
   void render(){
     scale(2,2);
-    clear();
-    background(0xff00ff);
+    renderCity(4,1);
+    renderCar(1);
+    framePos++;
+  }
+  void renderCity(int tiles, int mintiles){
+    PImage sidings = loadImage("calgary/street/sidings.png"),
+    road = loadImage("calgary/street/road.png"),
+    city = loadImage("calgary/street/city.png"),
+    clouds = loadImage("calgary/street/clouds.png"),
+    mountains = loadImage("calgary/street/mountains.png"),
+    skyline = loadImage("calgary/street/skyline.png");
+    PImage[] world = {skyline, mountains, clouds, city, road, sidings};
+    int[] worldXSpeed = {0,(framePos/64)%64,(framePos/16)%64,(framePos/2)%64,(framePos*4)%64,(framePos)%64};
+    int[] worldYSpeed = {0,0,8-(framePos/24)%64,0,0,0};
+    for(int x = 0; x<6; x++){
+      for(int i = -mintiles; i <= tiles; i++){
+        image(world[x],64*i-worldXSpeed[x],worldYSpeed[x]);
+      }
+    }
+    //image(mountains,64-(framePos/64)%64,0);
+    //image(mountains,-(framePos/64)%64,0);//animate mountains
+    //image(clouds,64-(framePos/16)%64,16-((1+framePos/24))%64);
+    //image(clouds,-(framePos/16)%64,16-((framePos/24))%64);//animate clouds.
+    //image(city,64-(framePos/2)%64,0); //city is decently fast
+    //image(city,-(framePos/2)%64,0);
+    //image(road,64-(framePos*4)%64,0); //animate road, it be quick
+    //image(road,-(framePos*4)%64,0);
+    //image(sidings,64-(framePos)%64,0); //animate sides, a bit slower.
+    //image(sidings,-(framePos)%64,0);
+  }
+  void renderCar(int tile){
+    //scale(2,2);
+    //clear();
+    //background(0xff00ff);
     PImage carBody = loadImage("vehicle/vehiclePic/"+carType+"/carBody.png"),
     wheels = loadImage("vehicle/vehiclePic/"+carType+"/wheel"+(1+(framePos/8)%2)+".png"),
     sideMask = loadImage("vehicle/vehiclePic/"+carType+"/sideMask.png"),
@@ -30,11 +62,6 @@ class carDisplay{
     frontShine = loadImage("vehicle/vehiclePic/"+carType+"/frontShine.png"),
     pureDark = loadImage("vehicle/vehiclePic/"+carType+"/pureShine.png")
     ;
-    this.framePos = ((framePos+1)%64);
-    if(random(10)>1)
-      image(wheels,0,0);
-    else
-      image(wheels,0,-1);
     pureDark.filter(INVERT);
     pureDark.filter(THRESHOLD);
     topMask.filter(INVERT);
@@ -45,12 +72,16 @@ class carDisplay{
     carBody.blend(pureDark,0,0,64,32,0,0,64,32,LIGHTEST);
     
     
-    frontShine.blend(frontShine,0,0,64,32,0-framePos,0,64,32,BLEND);
+    frontShine.blend(frontShine,0,0,64,32,0-framePos%64,0,64,32,BLEND);
     frontShine.mask(frontMask);
     carBody.blend(frontShine,0,0,64,32,0,0,64,32,LIGHTEST);
-    sideShine.blend(sideShine,0,0,64,32,0-framePos,0,64,32,BLEND);
+    sideShine.blend(sideShine,0,0,64,32,0-framePos%64,0,64,32,BLEND);
     sideShine.mask(sideMask);
     carBody.blend(sideShine,0,0,64,32,0,0,64,32,LIGHTEST);
-    image(carBody,0,0);
+    if(random(10)>1)
+      image(wheels,64*tile,20);
+    else
+      image(wheels,64*tile,20-1);
+    image(carBody,64*tile,20);
   }
 }
