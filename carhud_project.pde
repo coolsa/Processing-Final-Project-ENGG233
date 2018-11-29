@@ -71,14 +71,13 @@ void draw(){
   }
   else if(carSelect.equals("exit"))
     exit();
-  else{
+  else
     if(second != second()){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.secondTick();
       //println("asdfasdf");
       second = second();
     }
-  }
 }
 
 void keyPressed(){
