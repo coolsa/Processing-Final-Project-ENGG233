@@ -60,7 +60,23 @@ int second = millis();
 String carSelect = "";
 boolean setup = false;
 void draw(){
-  //gps.render(50.91, -113.91);
+  //scale(2,2);
+  //int test = millis();
+  //if(test%50==0){
+  //int second = millis()/1000;
+  //if(second%3==2)
+  //  gps.render(51.051, -114.092);
+  //if(second%3==1)
+  //  gps.render(51.081, -114.032);
+  //if(second%3==0){
+  //  println("LOOPS BROTHER");
+  //  gps.render(51.074, -114.135);}
+  //51.051, -114.092 //start
+  //51.096,-114.046 //middle
+  
+  //51.074, -114.135 //end
+  //if i hardcode the starting and ending coords to these, it should be good.
+
   if(carSelect.equals("truck") && !setup){
     setup = true;
     car = new carStatus("truck");
@@ -76,16 +92,15 @@ void draw(){
   }
   else if(carSelect.equals("exit"))
     exit();
-  else
-  //{
-    if(second/10 != millis()/10){
+  else{
+    if(second/100 != millis()/100){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.secondTick();
-      carDisplay.render(0xffffff);
+      //carDisplay.render(0xffffff);
       //println("asdfasdf");
       second = millis();
     }
-    
+  }
 }
 
 void keyPressed(){

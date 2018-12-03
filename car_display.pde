@@ -46,7 +46,6 @@ class carDisplay{
     sideMask = loadImage("vehicle/vehiclePic/"+carType+"/sideMask.png"),
     sideShine = loadImage("vehicle/vehiclePic/"+carType+"/sideShine.png"),
     topMask = loadImage("vehicle/vehiclePic/"+carType+"/topMask.png"),
-    topMask2 = loadImage("vehicle/vehiclePic/"+carType+"/topMask.png"),
     topShine = loadImage("vehicle/vehiclePic/"+carType+"/topShine.png"),
     frontMask = loadImage("vehicle/vehiclePic/"+carType+"/frontMask.png"),
     frontShine = loadImage("vehicle/vehiclePic/"+carType+"/frontShine.png"),
