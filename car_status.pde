@@ -35,6 +35,16 @@ class carStatus {
     clear();
     background(12);
     pushMatrix();
+    translate(width/2-692, height/2-166);
+    scale(2, 2);
+    hud.gps.render(y,x);
+    popMatrix();
+    
+    pushMatrix();
+    scale(2,2);
+    image(loadImage("vehicle/dashboard/dashboard.png"),0,0);
+    popMatrix();
+    pushMatrix();
     translate(width - (width/6 + 64), height-height/3);
     scale(2, 2);
     hud.fuel.render(fuel);
@@ -50,11 +60,6 @@ class carStatus {
     translate(width/2-64, height-height/3);
     scale(2, 2);
     hud.speed.render(speed);
-    popMatrix();
-    pushMatrix();
-    //translate(width/2-332, height/2-273);
-    scale(2, 2);
-    hud.gps.render(y,x);
     popMatrix();
   }
   void secondTick() {

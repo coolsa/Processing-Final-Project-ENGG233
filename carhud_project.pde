@@ -43,7 +43,7 @@ carStatus car;
 carDisplay carDisplay;
 carGPS gps;
 void setup(){
-  size(512,512);
+  size(1280,704);
   noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
   textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
@@ -96,10 +96,10 @@ void draw(){
     if(second/100 != millis()/100){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.secondTick();
-      //carDisplay.render(0xffffff);
       //println("asdfasdf");
       second = millis();
     }
+    //carDisplay.render(0xffffff);
   }
 }
 

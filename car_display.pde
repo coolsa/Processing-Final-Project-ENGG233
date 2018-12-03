@@ -17,8 +17,8 @@ class carDisplay{
   }
   void render(int bgCol){
     scale(2,2);
-    renderCity(4,1,bgCol);
-    renderCar(1);
+    renderCity((width/64),2,bgCol);
+    renderCar(2);
     framePos++;
   }
   void renderCity(int tiles, int mintiles, int backgroundColour){

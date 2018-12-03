@@ -12,7 +12,9 @@ class carHud{ //this is split into other parts, one for fuel, one for speed, one
   carSpeed speed;
   carRPM rpm;
   carGPS gps;
+  carDisplay car;
   carHud(float maxFuel){
+    
     fuel = new fuelLevel(maxFuel);
     speed = new carSpeed();
     rpm = new carRPM();
@@ -36,13 +38,7 @@ class carGPS{
     float[] minPos = {50.926,-113.823};
     float[] posDifference = {maxPos[0]-minPos[0],maxPos[1]-minPos[1]};
     float diffX = x-minPos[0], diffY = y-minPos[1];
-    //println(maxPos);
-    //println(minPos);
-    //println(posDifference);
-    //println(diffX, diffY);
-    println((256*(diffX/posDifference[0]))-128,(256*(diffY/posDifference[1]))-128);
     image(calgaryMap,(256*(diffY/posDifference[1]))-128,256*((diffX/posDifference[0])-.5));
-    //println(diffX/posDifference[0]);
     image(gpsX,0,0);
   }
 }
