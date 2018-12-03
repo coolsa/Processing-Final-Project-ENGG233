@@ -53,7 +53,7 @@ class carStatus {
     popMatrix();
     
     pushMatrix();
-    translate(width/2-64, height/2-64);
+    translate(width/2-332, height/2-273);
     scale(2, 2);
     hud.gps.render(y,x);
     popMatrix();

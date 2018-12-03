@@ -10,18 +10,18 @@ class carDisplay{
   //part of it is the car, other part is the not-car.
   String carType;
   int framePos; //this tells us what the offset from the origin is. this is going to change every render.
-  carDisplay(String car){
+  carDisplay(String car, int bgCol){
     framePos=0;
     carType = car;
-    render();
+    render(bgCol);
   }
-  void render(){
+  void render(int bgCol){
     scale(2,2);
-    renderCity(4,1);
+    renderCity(4,1,bgCol);
     renderCar(1);
     framePos++;
   }
-  void renderCity(int tiles, int mintiles){
+  void renderCity(int tiles, int mintiles, int backgroundColour){
     PImage sidings = loadImage("calgary/street/sidings.png"),
     road = loadImage("calgary/street/road.png"),
     city = loadImage("calgary/street/city.png"),
@@ -30,22 +30,12 @@ class carDisplay{
     skyline = loadImage("calgary/street/skyline.png");
     PImage[] world = {skyline, mountains, clouds, city, road, sidings};
     int[] worldXSpeed = {0,(framePos/64)%64,(framePos/16)%64,(framePos/2)%64,(framePos*4)%64,(framePos)%64};
-    int[] worldYSpeed = {0,0,8-(framePos/24)%64,0,0,0};
+    int[] worldYSpeed = {0,0,14-(framePos/24)%64,0,0,0};
     for(int x = 0; x<6; x++){
       for(int i = -mintiles; i <= tiles; i++){
         image(world[x],64*i-worldXSpeed[x],worldYSpeed[x]);
       }
     }
-    //image(mountains,64-(framePos/64)%64,0);
-    //image(mountains,-(framePos/64)%64,0);//animate mountains
-    //image(clouds,64-(framePos/16)%64,16-((1+framePos/24))%64);
-    //image(clouds,-(framePos/16)%64,16-((framePos/24))%64);//animate clouds.
-    //image(city,64-(framePos/2)%64,0); //city is decently fast
-    //image(city,-(framePos/2)%64,0);
-    //image(road,64-(framePos*4)%64,0); //animate road, it be quick
-    //image(road,-(framePos*4)%64,0);
-    //image(sidings,64-(framePos)%64,0); //animate sides, a bit slower.
-    //image(sidings,-(framePos)%64,0);
   }
   void renderCar(int tile){
     //scale(2,2);

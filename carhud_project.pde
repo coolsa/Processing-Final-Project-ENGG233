@@ -50,13 +50,13 @@ void setup(){
   //if you couldnt tell from what i have so far, im heavily inspired by them 8/16/pixely games.
   //pushMatrix();
   car = new carStatus("minicar");
-  carDisplay = new carDisplay(car.vehicle.carType);
+  carDisplay = new carDisplay(car.vehicle.carType,0xffffff);
   //car.secondTick();//first render, make it so its not empty for the first frame.
   //popMatrix();
   gps = new carGPS();
   
 }
-int second = second();
+int second = millis();
 String carSelect = "";
 boolean setup = false;
 void draw(){
@@ -77,13 +77,13 @@ void draw(){
   else if(carSelect.equals("exit"))
     exit();
   else
-  {
-    //if(second == second()){
+  //{
+    if(second/10 != millis()/10){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.secondTick();
-      carDisplay.render();
+      carDisplay.render(0xffffff);
       //println("asdfasdf");
-      second = second();
+      second = millis();
     }
     
 }
