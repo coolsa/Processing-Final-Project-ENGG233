@@ -2,6 +2,7 @@
 //direction, speed, fuel, fuel usage, other stuff. all here.
 //it reads from the data provided, and then works on that.
 //this file has kind of ended up as the main, overarching file, with most of the things that are mildly important. THIS IS THe CAR
+//for now, i have to reorganize this to get rid of the hud stuff.
 class carStatus {
   //this is where the cars are setup.
   //so minicar = BMW_323i
@@ -21,7 +22,6 @@ class carStatus {
       radius = 23;
       tankCapacity = 60;
     }
-    hud = new carHud(tankCapacity);
 
     secondTick();
   }
@@ -31,41 +31,10 @@ class carStatus {
     //so m/s to km/h = (m*1000) over (seconds to hour = seconds to minutes to hours... seconds / 60 / 60
     speed = speed*1000.0/(60*60); //so this is speed in km/h.
   }
-  void hudUpdate(float fuel, int rpm, float speed, float x, float y) {
-    clear();
-    background(12);
-    pushMatrix();
-    translate(width/2-692, height/2-166);
-    scale(2, 2);
-    hud.gps.render(y,x);
-    popMatrix();
-    
-    pushMatrix();
-    scale(2,2);
-    image(loadImage("vehicle/dashboard/dashboard.png"),0,0);
-    popMatrix();
-    pushMatrix();
-    translate(width - (width/6 + 64), height-height/3);
-    scale(2, 2);
-    hud.fuel.render(fuel);
-    popMatrix();
-
-    pushMatrix();
-    translate(width/6-64, height-height/3);
-    scale(2, 2);
-    hud.rpm.render(rpm);
-    popMatrix();
-
-    pushMatrix();
-    translate(width/2-64, height-height/3);
-    scale(2, 2);
-    hud.speed.render(speed);
-    popMatrix();
-  }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
-    hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
+    //hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
   }
 }

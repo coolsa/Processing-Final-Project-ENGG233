@@ -10,13 +10,17 @@ class carDisplay{
   //part of it is the car, other part is the not-car.
   String carType;
   int framePos; //this tells us what the offset from the origin is. this is going to change every render.
+  carHud hud;
+  carStatus status;
   carDisplay(String car, int bgCol){
+    
+    hud = new carHud(status.tankCapacity);
     framePos=0;
     carType = car;
     render(bgCol);
   }
   void render(int bgCol){
-    scale(2,2);
+    //scale(2,2);
     renderCity((width/64),2,bgCol);
     renderCar(2);
     framePos++;
@@ -72,5 +76,41 @@ class carDisplay{
     else
       image(wheels,64*tile,20-1);
     image(carBody,64*tile,20);
+  }
+  void hudUpdate(float fuel, int rpm, float speed, float x, float y) {
+    clear();
+    background(12);
+    pushMatrix();
+    translate(width/2-692, height/2-166);
+    scale(2, 2);
+    hud.gps.render(y,x);
+    popMatrix();
+    
+    pushMatrix();
+    scale(2,2);
+    this.render(0xffffff);
+    popMatrix();
+    
+    pushMatrix();
+    scale(2,2);
+    image(loadImage("vehicle/dashboard/dashboard.png"),0,0);
+    popMatrix();
+    pushMatrix();
+    translate(width - (width/6 + 64), height-height/3);
+    scale(2, 2);
+    hud.fuel.render(fuel);
+    popMatrix();
+
+    pushMatrix();
+    translate(width/6-64, height-height/3);
+    scale(2, 2);
+    hud.rpm.render(rpm);
+    popMatrix();
+
+    pushMatrix();
+    translate(width/2-64, height-height/3);
+    scale(2, 2);
+    hud.speed.render(speed);
+    popMatrix();
   }
 }

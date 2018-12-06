@@ -39,8 +39,8 @@ so i have to load in images. thats a big part of this all. or have it read image
 
 //fuelLevel fuel;
 //carSpeed speedometer;
-carStatus car;
-carDisplay carDisplay;
+//carStatus car;
+carDisplay car;
 carGPS gps;
 void setup(){
   size(1280,704);
@@ -49,8 +49,8 @@ void setup(){
   textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
   //if you couldnt tell from what i have so far, im heavily inspired by them 8/16/pixely games.
   //pushMatrix();
-  car = new carStatus("minicar");
-  carDisplay = new carDisplay(car.vehicle.carType,0xffffff);
+  //car = new carStatus("minicar");
+  //car = new carDisplay(car.vehicle.carType,0xffffff);
   //car.secondTick();//first render, make it so its not empty for the first frame.
   //popMatrix();
   gps = new carGPS();
@@ -79,10 +79,10 @@ void draw(){
 
   if(carSelect.equals("truck") && !setup){
     setup = true;
-    car = new carStatus("truck");
+    car = new carDisplay("truck",0xffffff);
   }
   else if(carSelect.equals("minicar") && !setup){
-    car = new carStatus("minicar");
+    car = new carDisplay("minicar",0xffffff);
     setup = true;
   }
   if(carSelect.equals("") && !setup){
@@ -95,7 +95,7 @@ void draw(){
   else{
     if(second/100 != millis()/100){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
-      car.secondTick();
+      car.status.secondTick();
       //println("asdfasdf");
       second = millis();
     }
