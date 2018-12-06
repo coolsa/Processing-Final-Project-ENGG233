@@ -9,7 +9,9 @@ class carStatus {
   //and truck = Truck_F150
   //otherwise default to minicar i guess.
   float radius, tankCapacity; //radius of wheel, tank size in litres.
-  float speed; //speed in km/h
+  float speed, distance=0; //speed in km/h and distance in km.
+  float fuelConsumed,fuelEfficency;
+  float[] pastFuelEfficency;
   vehicleData vehicle;
   carHud hud;
   float dirAngle = 0;
@@ -24,14 +26,18 @@ class carStatus {
       radius = 23;
       tankCapacity = 60;
     }
-
+    pastFuelEfficency = new float[vehicle.vehicle.getRowCount()];
     secondTick();
+  }
+  void updateDistance(float speed){
+    //because each update should be exactly 1 second. "each second, data is read from a file" or something.
+    distance += speed/60;
   }
   void updateSpeed(int rpm, float gearRatio) {
     speed = (rpm/60)*(1/gearRatio)*(2*PI*(radius/10)); //radius to meterse.
     //so that would become speed in meters per second..
     //so m/s to km/h = (m*1000) over (seconds to hour = seconds to minutes to hours... seconds / 60 / 60
-    speed = speed*1000.0/(60*60); //so this is speed in km/h.
+    speed = speed*1000.0/(60*60); //so this is speed in km/h. easy converting back too. just speed*(60*60)/1000. v nice
   }
   void updateDirection(float prevLat, float prevLong, float nextLat, float nextLong){
 
@@ -65,10 +71,17 @@ class carStatus {
     println(dirAngle);
     println(direction);
   }
+  void updateFuelConsumed(float startFuel, float fuelLevel){
+    //fuel at start of trip - fuel at present time in trip.
+    fuelConsumed = startFuel-fuelLevel;
+  }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
+    updateDistance(speed);
+    updateFuelConsumed(vehicle.fuelLevel[0],vehicle.fuelLevel[vehicle.time]);
+    println(fuelConsumed);
     if(vehicle.time>0)
     updateDirection(vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1],vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]);
     //hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
