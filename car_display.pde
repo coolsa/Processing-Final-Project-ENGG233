@@ -46,6 +46,17 @@ class carDisplay{
   }
   void renderFuelEconomyAvrgGraph(float[] fuelEconomyAvrg,int time){
     //size is going to be large-ish.
+    int iterations = 0;
+    float scale = 0.5;
+    if(time>30)
+      iterations = time-30;
+    pushMatrix();
+    for(int i = time; i >= iterations;i--){
+      fill(255);
+      rect(0,0,15,-fuelEconomyAvrg[i]*scale);
+      translate(-16,0);
+    }
+    popMatrix();
   }
   void renderCar(int tile){
     //scale(2,2);
@@ -83,7 +94,8 @@ class carDisplay{
       image(wheels,64*tile,20-1);
     image(carBody,64*tile,20);
   }
-  void hudUpdate(float fuel, int rpm, float speed, float x, float y, float direction) {
+  void hudUpdate(int time, float fuel, int rpm, float speed, float x, float y, float direction,String dir, float[] fuelEconAvrg, float[] fuelConsumed, float[] fuelEcon) {
+    int width = 1280;//i made it with this size in mind initially, but oh boy did i need to change it.
     clear();
     background(12);
     pushMatrix();
@@ -102,13 +114,13 @@ class carDisplay{
     image(loadImage("vehicle/dashboard/dashboard.png"),0,0);
     popMatrix();
     pushMatrix();
-    translate(width - (width/6 + 64), height-height/3);
+    translate(width/2 - -128, height/2-64);
     scale(2, 2);
     hud.fuel.render(fuel);
     popMatrix();
 
     pushMatrix();
-    translate(width/6-64, height-height/3);
+    translate(width/2-253, height/2-64);
     scale(2, 2);
     hud.rpm.render(rpm);
     popMatrix();
@@ -121,8 +133,20 @@ class carDisplay{
     pushMatrix();
     translate(width/2-505,height/2-204);
     scale(2,2);
-    hud.direction.render(direction);
+    hud.direction.render(direction,dir);
     popMatrix();
     
+    pushMatrix();
+    translate(width/2-256,height/2-128);
+    scale(2,2);
+    hud.fuelGraph.render(fuelEconAvrg,time,fuelEcon);
+    //renderFuelEconomyAvrgGraph(fuelEconAvrg,time);
+    popMatrix();
+    pushMatrix();
+    translate(width/2-256,height/2+256);
+    scale(2,2);
+    hud.fuelConsume.render(fuelConsumed,time);
+    //renderFuelEconomyAvrgGraph(fuelEconAvrg,time);
+    popMatrix();
   }
 }

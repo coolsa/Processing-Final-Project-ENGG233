@@ -13,11 +13,15 @@ class carHud{ //this is split into other parts, one for fuel, one for speed, one
   carRPM rpm;
   carGPS gps;
   carDirection direction;
+  carFuelEconGraph fuelGraph;
+  carFuelConsumpGraph fuelConsume;
   carHud(float maxFuel){
     fuel = new fuelLevel(maxFuel);
     speed = new carSpeed();
     rpm = new carRPM();
     gps = new carGPS();
+    fuelGraph = new carFuelEconGraph();
+    fuelConsume = new carFuelConsumpGraph();
     direction = new carDirection();
   }
 }
@@ -42,8 +46,8 @@ class carGPS{
     image(gpsX,0,0);
     //stroke(0xffffff);
     //fill(0xFfffff);
-    text(direction,120,120);
-    textSize(4);
+    //text(direction,120,120); //debug, render text direction.
+    //textSize(4);
     noStroke();
   }
 }
@@ -107,8 +111,72 @@ class fuelLevel{
     //text("test",15,15);
   }
 }
+class carFuelConsumpGraph{
+  int x = 8,y=32,barCount=32;
+  float largestValue=0.001;
+  void render(float[] fuelConsumption, int time){
+    //size is going to be large-ish.
+    if(fuelConsumption[time] > largestValue && time > 2)
+      largestValue = fuelConsumption[time];
+    int iterations = 0;
+    float scale = y/largestValue;
+    if(time>barCount-1)
+      iterations = time-barCount+1;
+    pushMatrix();
+    translate((time-iterations)*8,0);
+    for(int i = time; i >= iterations;i--){
+      fill(200);
+      rect(0,0,7,-fuelConsumption[i]*scale);
+      fill(255);
+      textSize(2);
+      text(nfc(i,0),0,0,8,8);
+      textSize(4);
+      translate(-8,0);
+    }
+    popMatrix();
+    //fill(255);
+    text(nfc(largestValue,2),-40,-y,48,16);
+    text(nfc(largestValue*3/4,2),-40,-y*3/4,48,16);
+    text(nfc(largestValue*2/4,2),-40,-y*2/4,48,16);
+    text(nfc(largestValue*1/4,2),-40,-y*1/4,48,16);
+    text(nfc(0,2),-40,0,48,16);
+    text("Fuel Consumption (Litres) over time (seconds)",0,8,8*barCount,16);
+  }
+}
+class carFuelEconGraph{
+  int x = 8,y=32,barCount=32;
+  float largestValue=0.01;
+  void render(float[] fuelEconomyAvrg, int time, float[] fuelEconomy){
+    //size is going to be large-ish.
+    if(fuelEconomyAvrg[time] > largestValue && time > 2)
+      largestValue = fuelEconomyAvrg[time];
+    int iterations = 0;
+    float scale = y/largestValue;
+    if(time>barCount-1)
+      iterations = time-barCount+1;
+    pushMatrix();
+    translate((time-iterations)*8,0);
+    for(int i = time; i >= iterations;i--){
+      fill(200);
+      rect(0,0,7,-fuelEconomyAvrg[i]*scale);
+      fill(255);
+      textSize(2);
+      text(nfc(i,0),0,0,8,8);
+      textSize(4);
+      translate(-8,0);
+    }
+    popMatrix();
+    //fill(255);
+    text(nfc(largestValue,2),-40,-y,48,16);
+    text(nfc(largestValue*3/4,2),-40,-y*3/4,48,16);
+    text(nfc(largestValue*2/4,2),-40,-y*2/4,48,16);
+    text(nfc(largestValue*1/4,2),-40,-y*1/4,48,16);
+    text(nfc(0,2),-40,0,48,16);
+    text("Average Fuel Economy (km/l) over time (seconds)",0,8,8*barCount,16);
+  }
+}
 class carDirection{
-  void render(float direction){
+  void render(float direction,String dir){
     PImage compassBack = loadImage("vehicle/dashboard/compassBack.png"),
     compassLetters = loadImage("vehicle/dashboard/compassLetters.png"),
     compassNeedle = loadImage("vehicle/dashboard/compassNeedle.png")
@@ -129,5 +197,6 @@ class carDirection{
     //translate(width/2,height/2);
     image(compassNeedle,0,0);
     popMatrix();
+    text(dir,0,64,64,10);
   }
 }

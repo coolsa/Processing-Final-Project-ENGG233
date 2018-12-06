@@ -43,10 +43,11 @@ so i have to load in images. thats a big part of this all. or have it read image
 carDisplay car;
 carGPS gps;
 void setup(){
-  size(1280,704);
+  size(1044,704);
   noStroke();
   smooth(0); //gotta get them pixely feeeeeel.
   textFont(createFont("font/PressStart2P-Regular.ttf",4)); //font from google fonts. very nice pixel art.
+  textAlign(CENTER);
   //if you couldnt tell from what i have so far, im heavily inspired by them 8/16/pixely games.
   //pushMatrix();
   //car = new carStatus("minicar");
@@ -93,9 +94,9 @@ void draw(){
   else if(carSelect.equals("exit"))
     exit();
   else{
-    car.hudUpdate(car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle);
+    car.hudUpdate(car.status.vehicle.time,car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle,car.status.direction,car.status.fuelEconomyAvrg,car.status.fuelConsumed,car.status.fuelEconomy);
     //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much. it needs to run on framerate though so i cant put it inside. ehh...
-    if(second/20 != millis()/20){
+    if(second/200 != millis()/200){
       //keeps the view port at 60 fps, but renders the project a bit more frequently. 
       car.status.secondTick();
             //println("asdfasdf");

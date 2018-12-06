@@ -10,8 +10,8 @@ class carStatus {
   //otherwise default to minicar i guess.
   float radius, tankCapacity; //radius of wheel, tank size in litres.
   float speed, distance=0; //speed in km/h and distance in km.
-  float fuelConsumed;
-  float[] fuelEconomy, fuelEconomyAvrg;
+  //float fuelConsumed;
+  float[] fuelEconomy, fuelEconomyAvrg, fuelConsumed;
   vehicleData vehicle;
   carHud hud;
   float dirAngle = 0;
@@ -28,6 +28,7 @@ class carStatus {
     }
     fuelEconomy = new float[vehicle.vehicle.getRowCount()];
     fuelEconomyAvrg = new float[vehicle.vehicle.getRowCount()];
+    fuelConsumed = new float[vehicle.vehicle.getRowCount()];
     secondTick();
   }
   void updateDistance(){ //speed is in this, so no need to feed it in.
@@ -74,10 +75,10 @@ class carStatus {
   }
   void updateFuelConsumed(float startFuel, float fuelLevel){
     //fuel at start of trip - fuel at present time in trip.
-    fuelConsumed = startFuel-fuelLevel;
+    fuelConsumed[vehicle.time] = startFuel-fuelLevel;
   }
   void updateFuelEconomy(){//because this is based off of the fuel consumed, distance, no need to feed values in
-    fuelEconomy[vehicle.time] = distance/fuelConsumed; //this allows history! woooooo.
+    fuelEconomy[vehicle.time] = distance/fuelConsumed[vehicle.time]; //this allows history! woooooo.
     if(vehicle.time>0){//the below basically calculates the average over time, very fancy.
       //more complex, we know the prev (fuelAvrg[n-1] is (fuel[0]+fuel[1]+...+fuel[n-1])/(n-1), so n would be ((n-1)*fuelAvrg[n-1] + fuel[n])/n. v fancy.
       fuelEconomyAvrg[vehicle.time] = (fuelEconomyAvrg[vehicle.time-1]*(vehicle.time-1) + fuelEconomy[vehicle.time])/vehicle.time;
