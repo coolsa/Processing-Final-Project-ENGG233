@@ -36,9 +36,11 @@ class carDisplay{
     PImage[] world = {skyline, mountains, clouds, city, road, sidings};
     int[] worldXSpeed = {0,(framePos/64)%64,(framePos/16)%64,(framePos/2)%64,(framePos*4)%64,(framePos)%64};
     int[] worldYSpeed = {0,0,14-(framePos/24)%64,0,0,0};
+    //fill(backgroundColour);
     for(int x = 0; x<6; x++){
       for(int i = -mintiles; i <= tiles; i++){
         image(world[x],64*i-worldXSpeed[x],worldYSpeed[x]);
+        //rect(64,64,64*i,0);
       }
     }
   }

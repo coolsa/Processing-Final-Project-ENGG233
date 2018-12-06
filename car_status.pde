@@ -12,6 +12,7 @@ class carStatus {
   float speed; //speed in km/h
   vehicleData vehicle;
   carHud hud;
+  String direction = "";
   carStatus(String carType) {
     if (carType.equals("truck")) {
       vehicle = new vehicleData("Truck_F150");
@@ -31,10 +32,26 @@ class carStatus {
     //so m/s to km/h = (m*1000) over (seconds to hour = seconds to minutes to hours... seconds / 60 / 60
     speed = speed*1000.0/(60*60); //so this is speed in km/h.
   }
+  void updateDirection(float[] prevPos, float[] nextPos){
+    float[] diffPos = {nextPos[0]-prevPos[0],nextPos[1]-prevPos[1]};
+    direction = "";
+    if(diffPos[0]>0)
+      direction += "N";
+    else if(diffPos[0]<0)
+      direction += "S";
+    
+    if(diffPos[1]>0)
+      direction += "E";
+    else if(diffPos[1]<0)
+      direction += "W";
+      
+    println(direction);
+  }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
+    updateDirection({vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1]},[vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]]);
     //hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
   }
 }
