@@ -61,7 +61,7 @@ class carSpeed{
     image(numbers,0,0);
     pushMatrix();
     translate(32,32);
-    println(speed); 
+    //println(speed); 
     rotate(PI+(speed/200)*PI);//v fancy dial.
     image(pointer,-32,-32);
     popMatrix();
@@ -77,7 +77,7 @@ class carRPM{
     image(numbers,0,0);
     pushMatrix();
     translate(32,32);
-    println(rpm); 
+    //println(rpm); 
     rotate(PI+(rpm/2000)*PI); //fancy rotating dial
     image(pointer,-32,-32);
     popMatrix();
@@ -112,26 +112,33 @@ class fuelLevel{
   }
 }
 class carFuelConsumpGraph{
-  int x = 8,y=32,barCount=32;
-  float largestValue=0.001;
+  float x =(32.0/40)*8,y=32,largestValue=40;
+  int barCount=40;
   void render(float[] fuelConsumption, int time){
     //size is going to be large-ish.
-    if(fuelConsumption[time] > largestValue && time > 2)
-      largestValue = fuelConsumption[time];
+    //if(fuelConsumption[time] > largestValue && time > 2)
+    //  largestValue = fuelConsumption[time];
     int iterations = 0;
     float scale = y/largestValue;
+    if(largestValue>3)
+      largestValue -=0.2;
     if(time>barCount-1)
       iterations = time-barCount+1;
     pushMatrix();
-    translate((time-iterations)*8,0);
+    translate((time-iterations)*x,0);
     for(int i = time; i >= iterations;i--){
+      float rendering = fuelConsumption[i];
+      if(fuelConsumption[i] > largestValue && i > 2) //wow, auto scaling graphs.! fancy.
+        largestValue = fuelConsumption[i];
+      if(fuelConsumption[i]>30 && i < 2)
+        rendering = 30;
       fill(200);
-      rect(0,0,7,-fuelConsumption[i]*scale);
+      rect(0,0,x-1,-rendering*scale);
       fill(255);
       textSize(2);
-      text(nfc(i,0),0,0,8,8);
+      text(nfc(i,0),0,0,x,x);
       textSize(4);
-      translate(-8,0);
+      translate(-x,0);
     }
     popMatrix();
     //fill(255);
@@ -140,30 +147,33 @@ class carFuelConsumpGraph{
     text(nfc(largestValue*2/4,2),-40,-y*2/4,48,16);
     text(nfc(largestValue*1/4,2),-40,-y*1/4,48,16);
     text(nfc(0,2),-40,0,48,16);
-    text("Fuel Consumption (Litres) over time (seconds)",0,8,8*barCount,16);
+    text("Fuel Consumption (litres/100 km) over time (seconds)",0,8,x*barCount,16);
+    text("Current Fuel Consumption: " + nfc(fuelConsumption[time],2),0,16,x*barCount,16);
   }
 }
 class carFuelEconGraph{
-  int x = 8,y=32,barCount=32;
-  float largestValue=0.01;
+  float x =(32.0/40)*8,y=32,largestValue=30;
+  int barCount=40;
   void render(float[] fuelEconomyAvrg, int time, float[] fuelEconomy){
     //size is going to be large-ish.
-    if(fuelEconomyAvrg[time] > largestValue && time > 2)
-      largestValue = fuelEconomyAvrg[time];
     int iterations = 0;
     float scale = y/largestValue;
+    if(largestValue>50)
+      largestValue -=0.2;
     if(time>barCount-1)
       iterations = time-barCount+1;
     pushMatrix();
-    translate((time-iterations)*8,0);
+    translate((time-iterations)*x,0);
     for(int i = time; i >= iterations;i--){
+      if(fuelEconomyAvrg[i] > largestValue)
+        largestValue = fuelEconomyAvrg[i];
       fill(200);
-      rect(0,0,7,-fuelEconomyAvrg[i]*scale);
+      rect(0,0,x-1,-fuelEconomyAvrg[i]*scale);
       fill(255);
       textSize(2);
-      text(nfc(i,0),0,0,8,8);
+      text(nfc(i,0),0,0,x,x);
       textSize(4);
-      translate(-8,0);
+      translate(-x,0);
     }
     popMatrix();
     //fill(255);
@@ -172,7 +182,8 @@ class carFuelEconGraph{
     text(nfc(largestValue*2/4,2),-40,-y*2/4,48,16);
     text(nfc(largestValue*1/4,2),-40,-y*1/4,48,16);
     text(nfc(0,2),-40,0,48,16);
-    text("Average Fuel Economy (km/l) over time (seconds)",0,8,8*barCount,16);
+    text("Average Fuel Economy (km/l) over time (seconds)",0,8,x*barCount,16);
+    text("Current Fuel Economy: " + nfc(fuelEconomy[time],2)+"km/l",0,16,x*barCount,16);
   }
 }
 class carDirection{

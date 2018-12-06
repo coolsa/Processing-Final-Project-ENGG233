@@ -1,5 +1,4 @@
-//this file takes all the parts, the car_status and the car_hud, and puts them together into a lovely display. this is basically the user end. 
-//im worried that the simplistic file formatting may dock points, so please do let me know if that is the case.
+//oh boy this is the whole thing.
 /*
 so the goal: to make something fancy that is a hud. perhaps have a little car zoooooming around a map. that would be neat.
 
@@ -94,9 +93,11 @@ void draw(){
   else if(carSelect.equals("exit"))
     exit();
   else{
-    car.hudUpdate(car.status.vehicle.time,car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle,car.status.direction,car.status.fuelEconomyAvrg,car.status.fuelConsumed,car.status.fuelEconomy);
+    car.hudUpdate(car.status.vehicle.time,car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle,car.status.direction,car.status.fuelEconomyAvrg,car.status.fuelConsumption,car.status.fuelEconomy, car.status.distance, car.status.range);
     //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much. it needs to run on framerate though so i cant put it inside. ehh...
-    if(second/200 != millis()/200){
+    //there are some oddities with the whole thing. like the jumps in the bar graphs.
+    //but im going to chock it up to issues in the actual data feed. the gps jumps around inconsistently, so I can only assume how reliable the other values are. (which is not that good)
+    if(second/1000 != millis()/1000){
       //keeps the view port at 60 fps, but renders the project a bit more frequently. 
       car.status.secondTick();
             //println("asdfasdf");

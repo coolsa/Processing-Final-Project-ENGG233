@@ -94,7 +94,7 @@ class carDisplay{
       image(wheels,64*tile,20-1);
     image(carBody,64*tile,20);
   }
-  void hudUpdate(int time, float fuel, int rpm, float speed, float x, float y, float direction,String dir, float[] fuelEconAvrg, float[] fuelConsumed, float[] fuelEcon) {
+  void hudUpdate(int time, float fuel, int rpm, float speed, float x, float y, float direction,String dir, float[] fuelEconAvrg, float[] fuelConsumed, float[] fuelEcon, float distance, float range) {
     int width = 1280;//i made it with this size in mind initially, but oh boy did i need to change it.
     clear();
     background(12);
@@ -147,6 +147,19 @@ class carDisplay{
     scale(2,2);
     hud.fuelConsume.render(fuelConsumed,time);
     //renderFuelEconomyAvrgGraph(fuelEconAvrg,time);
+    popMatrix();
+    //the rest of the renders are just text based things. like the range, fuel consumption, odometer, fuel economy. those things. //actually the fuel economy and consumption could be part of their respective graphs. like just at the bottom of them...
+    //yea lets do that.
+    pushMatrix();
+    translate(width/2-254,height/2+128);
+    scale(2,2);
+    text("Odometer: " + nfc(distance,2) + "km",0,0,64,16);
+    popMatrix();
+    
+    pushMatrix();
+    translate(width/2+128,height/2+128);
+    scale(2,2);
+    text("Range: " + nfc(range,2) + "km",0,0,64,16);
     popMatrix();
   }
 }

@@ -9,9 +9,9 @@ class carStatus {
   //and truck = Truck_F150
   //otherwise default to minicar i guess.
   float radius, tankCapacity; //radius of wheel, tank size in litres.
-  float speed, distance=0; //speed in km/h and distance in km.
+  float speed, distance=0, range=0, smolDist; //speed in km/h and distance in km.
   //float fuelConsumed;
-  float[] fuelEconomy, fuelEconomyAvrg, fuelConsumed;
+  float[] fuelEconomy, fuelEconomyAvrg, fuelConsumed, fuelConsumption;
   vehicleData vehicle;
   carHud hud;
   float dirAngle = 0;
@@ -29,11 +29,14 @@ class carStatus {
     fuelEconomy = new float[vehicle.vehicle.getRowCount()];
     fuelEconomyAvrg = new float[vehicle.vehicle.getRowCount()];
     fuelConsumed = new float[vehicle.vehicle.getRowCount()];
+    fuelConsumption = new float[vehicle.vehicle.getRowCount()];
     secondTick();
   }
   void updateDistance(){ //speed is in this, so no need to feed it in.
     //because each update should be exactly 1 second. "each second, data is read from a file" or something.
-    distance += speed/60;
+    distance += (speed*(60*60)/(1000))/1000; //this is meters per second, so /1000 again to get km/sec. or distance. yeee.
+    smolDist = (speed*(60*60)/(1000))/1000; //this is the speed traveled in this second. used for fuel economy.
+    //but is this right? h = time/(60*60) so time/h = 60*60. in this case its 1 hour, so time/1 = 60*60, or time = 60*60. 3600. 
   }
   void updateSpeed(int rpm, float gearRatio) {
     speed = (rpm/60)*(1/gearRatio)*(2*PI*(radius/10)); //radius to meterse.
@@ -53,7 +56,7 @@ class carStatus {
     //i have oposite and adj. so i just need arc tan of those values. the matter of what i want for the direction.
     //this might work, but i think ill need to alter the positions a bit. in the rendering.
     if(Float.isNaN(dirAngle)){
-      println("asuid\nasdfasdfasdf\n\nasdasdfasdfasdfn\n\nasdfasdfasdfhfuiashdf");
+      //println("asuid\nasdfasdfasdf\n\nasdasdfasdfasdfn\n\nasdfasdfasdfhfuiashdf");
       dirAngle = 0;
     }
     if(diffPos[0]>0){
@@ -70,35 +73,64 @@ class carStatus {
     else if(diffPos[1]<0){
       direction += "W";
     }
-    println(dirAngle);
-    println(direction); //more debug.
+    //println(dirAngle);
+    //println(direction); //more debug.
   }
-  void updateFuelConsumed(float startFuel, float fuelLevel){
+  void updateFuelConsumed(float[] fuelLevel){
     //fuel at start of trip - fuel at present time in trip.
-    fuelConsumed[vehicle.time] = startFuel-fuelLevel;
+    //if(vehicle.time>0)
+      //fuelConsumed[vehicle.time] = fuelLevel[0]-fuelLevel[vehicle.time];
+    fuelConsumed[vehicle.time] = fuelLevel[0];
+    if(vehicle.time>0)
+      fuelConsumed[vehicle.time] = fuelLevel[vehicle.time-1]-fuelLevel[vehicle.time];
+    
   }
-  void updateFuelEconomy(){//because this is based off of the fuel consumed, distance, no need to feed values in
-    fuelEconomy[vehicle.time] = distance/fuelConsumed[vehicle.time]; //this allows history! woooooo.
+  void updateFuelConsumption(){
+    //fuel at start of trip - fuel at present time in trip.
+    fuelConsumption[vehicle.time] = 100/fuelEconomyAvrg[vehicle.time];
+  }
+  void updateFuelEconomy(){//because this is based off of the fuel consumed, distance, no need to feed values in //this allows history! woooooo.
+    //println(smolFuelUsed);
+    fuelEconomy[vehicle.time]=0;
+    if(fuelConsumed[vehicle.time] != 0)
+      fuelEconomy[vehicle.time] = (smolDist)/(fuelConsumed[vehicle.time]);
+    //println(smolDist,smolFuelUsed,"IISHDFIHSDF", fuelEconomy[vehicle.time]*1000);
     if(vehicle.time>0){//the below basically calculates the average over time, very fancy.
-      //more complex, we know the prev (fuelAvrg[n-1] is (fuel[0]+fuel[1]+...+fuel[n-1])/(n-1), so n would be ((n-1)*fuelAvrg[n-1] + fuel[n])/n. v fancy.
-      fuelEconomyAvrg[vehicle.time] = (fuelEconomyAvrg[vehicle.time-1]*(vehicle.time-1) + fuelEconomy[vehicle.time])/vehicle.time;
-      if(Float.isNaN(fuelEconomy[vehicle.time]) || Float.isNaN(fuelEconomyAvrg[vehicle.time-1]))
-        fuelEconomyAvrg[vehicle.time] = 0;
+      //more complex, we know the prev (fuelAvrg[n-1] is (fuel[0]+fuel[1]+...+fuel[n-1])/(n-1), so fuelAvrg[n] would be ((n-1)*fuelAvrg[n-1] + fuel[n])/n. v fancy.
+      //fuelEconomyAvrg[vehicle.time] = (fuelEconomyAvrg[vehicle.time-1]*(vehicle.time-1) + fuelEconomy[vehicle.time])/vehicle.time;
+      //actually needs to use the last 60 seconds. so this is going to have to do...
+      for(int i=vehicle.time;i>=0;i--){
+        if(i>60)
+          i = 59;
+        fuelEconomyAvrg[vehicle.time]+=fuelEconomy[i];
+        //println(vehicle.time,fuelEconomy[i]);
+      }
+      if(vehicle.time>60)
+        fuelEconomyAvrg[vehicle.time]/=60;
+      else
+        fuelEconomyAvrg[vehicle.time]/=vehicle.time;
+      //if(Float.isNaN(fuelEconomyAvrg[vehicle.time-1]))
+      //  fuelEconomyAvrg[vehicle.time] = 0;
     }
     else
       fuelEconomyAvrg[vehicle.time] = fuelEconomy[vehicle.time];
   }
-  void updateRange(){
+  void updateRange(float fuelLevel){
+    range = fuelEconomyAvrg[vehicle.time]*fuelLevel;
+    //println("asiodfjioasdjhf",range,fuelEconomyAvrg[vehicle.time],fuelLevel);
   }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
-    updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
     updateDistance();
-    updateFuelConsumed(vehicle.fuelLevel[0],vehicle.fuelLevel[vehicle.time]);
+    updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
+    updateFuelConsumed(vehicle.fuelLevel);
     updateFuelEconomy();
-    println(fuelEconomy[vehicle.time]);
-    println(fuelEconomyAvrg[vehicle.time]);
+    updateFuelConsumption();
+    updateRange(vehicle.fuelLevel[vehicle.time]);
+    //update
+    //println(fuelEconomy[vehicle.time]);
+    //println(fuelEconomyAvrg[vehicle.time]);
     //println(fuelConsumed);
     if(vehicle.time>0)
     updateDirection(vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1],vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]);
