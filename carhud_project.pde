@@ -93,9 +93,9 @@ void draw(){
   else if(carSelect.equals("exit"))
     exit();
   else{
-    car.hudUpdate(car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time]);
-    //i hate myself. the above. i truely hate myself.
-    if(second/100 != millis()/100){
+    car.hudUpdate(car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle);
+    //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much.
+    if(second/200 != millis()/200){
       //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
       car.status.secondTick();
             //println("asdfasdf");

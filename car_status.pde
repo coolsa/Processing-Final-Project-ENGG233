@@ -34,22 +34,36 @@ class carStatus {
     speed = speed*1000.0/(60*60); //so this is speed in km/h.
   }
   void updateDirection(float prevLat, float prevLong, float nextLat, float nextLong){
+
+
+    //float[] diffPos = {-1,1};
     float[] diffPos = {nextLat-prevLat,nextLong-prevLong};
     direction = "";
-    if(diffPos[0]>0)
+    dirAngle = atan(diffPos[1]/diffPos[0]); //just need to so some things with taht.
+    if(Float.isNaN(dirAngle)){
+      println("asuid\nasdfasdfasdf\n\nasdasdfasdfasdfn\n\nasdfasdfasdfhfuiashdf");
+      dirAngle = 0;}
+    if(diffPos[0]>0){
+      dirAngle-=PI/2;
       direction += "N";
-    else if(diffPos[0]<0)
+    }
+    else if(diffPos[0]<0){
+      dirAngle+=PI/2;
       direction += "S";
-    
-    if(diffPos[1]>0)
+    }
+    if(diffPos[1]>0){
+      //dirAngle += PI;
       direction += "E";
-    else if(diffPos[1]<0)
+    }
+    else if(diffPos[1]<0){
       direction += "W";
+    }
     //i could rework this so that i have two values, one is the angle and the other is the distance.
-    //remember, soh cah toa...
-    //i have oposite and adj. so i just need tan of those values. the matter of what i want for the direction.
+    //remember, soh cah toa... / is distance between the two points, but i have _ and | so:
+    //i have oposite and adj. so i just need arc tan of those values. the matter of what i want for the direction.
     //this might work:
-    dirAngle = tan(diffPos[0]/diffPos[1]); //just need to so some things with taht.
+    println(dirAngle);
+    println(direction);
   }
   void secondTick() {
     //println("asdfasdf");

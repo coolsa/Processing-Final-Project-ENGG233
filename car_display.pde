@@ -80,7 +80,7 @@ class carDisplay{
       image(wheels,64*tile,20-1);
     image(carBody,64*tile,20);
   }
-  void hudUpdate(float fuel, int rpm, float speed, float x, float y) {
+  void hudUpdate(float fuel, int rpm, float speed, float x, float y, float direction) {
     clear();
     background(12);
     pushMatrix();
@@ -93,7 +93,7 @@ class carDisplay{
     scale(2,2);
     this.render(0xffffff);
     popMatrix();
-    println(status.direction);
+    //println(status.direction);
     pushMatrix();
     scale(2,2);
     image(loadImage("vehicle/dashboard/dashboard.png"),0,0);
@@ -115,5 +115,11 @@ class carDisplay{
     scale(2, 2);
     hud.speed.render(speed);
     popMatrix();
+    pushMatrix();
+    translate(width/2,height/2);
+    scale(2,2);
+    hud.direction.render(direction);
+    popMatrix();
+    
   }
 }

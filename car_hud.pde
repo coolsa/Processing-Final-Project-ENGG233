@@ -12,13 +12,13 @@ class carHud{ //this is split into other parts, one for fuel, one for speed, one
   carSpeed speed;
   carRPM rpm;
   carGPS gps;
-  carDisplay car;
+  carDirection direction;
   carHud(float maxFuel){
-    
     fuel = new fuelLevel(maxFuel);
     speed = new carSpeed();
     rpm = new carRPM();
     gps = new carGPS();
+    direction = new carDirection();
   }
 }
 
@@ -40,8 +40,8 @@ class carGPS{
     float diffX = x-minPos[0], diffY = y-minPos[1];
     image(calgaryMap,(256*(diffY/posDifference[1]))-128,256*((diffX/posDifference[0])-.5));
     image(gpsX,0,0);
-    stroke(0xffffff);
-    fill(0x000000);
+    //stroke(0xffffff);
+    //fill(0xFfffff);
     text(direction,120,120);
     textSize(4);
     noStroke();
@@ -87,5 +87,29 @@ class fuelLevel{
     image(fuelBack,0,0);
     text(nfc(fuelLevel,1)+"L\n/\n"+nfc(maxFuel,1)+"L",8,16,23,30);
     //text("test",15,15);
+  }
+}
+class carDirection{
+  void render(float direction){
+    PImage compassBack = loadImage("vehicle/dashboard/compassBack.png"),
+    compassLetters = loadImage("vehicle/dashboard/compassLetters.png"),
+    compassNeedle = loadImage("vehicle/dashboard/compassNeedle.png")
+    ;
+    pushMatrix();
+    //translate(-width/2,-height/2);
+    pushMatrix();
+    //translate(width/2,height/2);
+    image(compassBack,0,0);
+    popMatrix();
+    pushMatrix();
+    //rotate(-direction);
+    translate(32,32);
+    rotate(PI-direction+PI/2);
+    image(compassLetters,-32,-32);
+    popMatrix();
+    
+    //translate(width/2,height/2);
+    image(compassNeedle,0,0);
+    popMatrix();
   }
 }
