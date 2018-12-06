@@ -86,14 +86,14 @@ class carDisplay{
     pushMatrix();
     translate(width/2-692, height/2-166);
     scale(2, 2);
-    hud.gps.render(y,x);
+    hud.gps.render(y,x,status.direction);
     popMatrix();
     
     pushMatrix();
     scale(2,2);
     this.render(0xffffff);
     popMatrix();
-    
+    println(status.direction);
     pushMatrix();
     scale(2,2);
     image(loadImage("vehicle/dashboard/dashboard.png"),0,0);

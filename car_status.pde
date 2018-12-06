@@ -12,6 +12,7 @@ class carStatus {
   float speed; //speed in km/h
   vehicleData vehicle;
   carHud hud;
+  float dirAngle = 0;
   String direction = "";
   carStatus(String carType) {
     if (carType.equals("truck")) {
@@ -32,8 +33,8 @@ class carStatus {
     //so m/s to km/h = (m*1000) over (seconds to hour = seconds to minutes to hours... seconds / 60 / 60
     speed = speed*1000.0/(60*60); //so this is speed in km/h.
   }
-  void updateDirection(float[] prevPos, float[] nextPos){
-    float[] diffPos = {nextPos[0]-prevPos[0],nextPos[1]-prevPos[1]};
+  void updateDirection(float prevLat, float prevLong, float nextLat, float nextLong){
+    float[] diffPos = {nextLat-prevLat,nextLong-prevLong};
     direction = "";
     if(diffPos[0]>0)
       direction += "N";
@@ -44,14 +45,18 @@ class carStatus {
       direction += "E";
     else if(diffPos[1]<0)
       direction += "W";
-      
-    println(direction);
+    //i could rework this so that i have two values, one is the angle and the other is the distance.
+    //remember, soh cah toa...
+    //i have oposite and adj. so i just need tan of those values. the matter of what i want for the direction.
+    //this might work:
+    dirAngle = tan(diffPos[0]/diffPos[1]); //just need to so some things with taht.
   }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
-    updateDirection({vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1]},[vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]]);
+    if(vehicle.time>0)
+    updateDirection(vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1],vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]);
     //hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
   }
 }

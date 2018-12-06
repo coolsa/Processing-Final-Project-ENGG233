@@ -33,13 +33,18 @@ class carGPS{
   calgaryMap = loadImage("calgary/calgaryMap.png"); //a 96x96 image.
   //so in relation to the position, then scale it down? something like that.
   //i bet it must do something with the difference between the corners, the difference from the max pos and given pos, and the size of the image.
-  void render(float x, float y){//51.206, -114.350  50.905,-113.950
+  void render(float x, float y,String direction){//51.206, -114.350  50.905,-113.950
     float[] maxPos = {51.193, -114.350};
     float[] minPos = {50.926,-113.823};
     float[] posDifference = {maxPos[0]-minPos[0],maxPos[1]-minPos[1]};
     float diffX = x-minPos[0], diffY = y-minPos[1];
     image(calgaryMap,(256*(diffY/posDifference[1]))-128,256*((diffX/posDifference[0])-.5));
     image(gpsX,0,0);
+    stroke(0xffffff);
+    fill(0x000000);
+    text(direction,120,120);
+    textSize(4);
+    noStroke();
   }
 }
 
