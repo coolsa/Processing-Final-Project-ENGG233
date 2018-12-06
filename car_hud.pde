@@ -50,16 +50,34 @@ class carGPS{
 
 class carSpeed{
   void render(float speed){
-    PImage speedometer = loadImage("vehicle/dashboard/speedometerBack.png");
+    PImage speedometer = loadImage("vehicle/dashboard/speedometer.png"),
+    pointer = loadImage("vehicle/dashboard/speedometerPointer.png"),
+    numbers = loadImage("vehicle/dashboard/speedometerNumbers.png");
     image(speedometer,0,0);
-    text(nfc(speed,3)+" KM/H",13,28,44,35);
+    image(numbers,0,0);
+    pushMatrix();
+    translate(32,32);
+    println(speed); 
+    rotate(PI+(speed/200)*PI);//v fancy dial.
+    image(pointer,-32,-32);
+    popMatrix();
+    text(nfc(speed,3)+" \tKM/H",0,64,64,10);
   }
 }
 class carRPM{
   void render(float rpm){ //currently just a modification of the speedometer, but will be updated in soon.
-    PImage speedometer = loadImage("vehicle/dashboard/speedometerBack.png");
-    image(speedometer,0,0);
-    text(nfc(rpm,3)+" RPM",13,28,44,35);
+    PImage tachometer = loadImage("vehicle/dashboard/speedometer.png"),
+    pointer = loadImage("vehicle/dashboard/speedometerPointer.png"),
+    numbers = loadImage("vehicle/dashboard/tachometerNumbers.png");
+    image(tachometer,0,0);
+    image(numbers,0,0);
+    pushMatrix();
+    translate(32,32);
+    println(rpm); 
+    rotate(PI+(rpm/2000)*PI); //fancy rotating dial
+    image(pointer,-32,-32);
+    popMatrix();
+    text(nfc(rpm,3)+" RPM",0,64,64,10);
   }
 }
 class fuelLevel{
@@ -104,7 +122,7 @@ class carDirection{
     pushMatrix();
     //rotate(-direction);
     translate(32,32);
-    rotate(PI-direction+PI/2);
+    rotate(PI-direction+PI/2);//oh boy i did need to alter those positions.
     image(compassLetters,-32,-32);
     popMatrix();
     

@@ -94,9 +94,9 @@ void draw(){
     exit();
   else{
     car.hudUpdate(car.status.vehicle.fuelLevel[car.status.vehicle.time], car.status.vehicle.rpm[car.status.vehicle.time], car.status.speed,car.status.vehicle.longitude[car.status.vehicle.time],car.status.vehicle.latitude[car.status.vehicle.time],car.status.dirAngle);
-    //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much.
-    if(second/200 != millis()/200){
-      //this bit keeps the fps at 60, but renders the hud every second. for the future stuffs. ye.
+    //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much. it needs to run on framerate though so i cant put it inside. ehh...
+    if(second/20 != millis()/20){
+      //keeps the view port at 60 fps, but renders the project a bit more frequently. 
       car.status.secondTick();
             //println("asdfasdf");
       second = millis();

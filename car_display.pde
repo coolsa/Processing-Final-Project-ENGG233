@@ -44,6 +44,9 @@ class carDisplay{
       }
     }
   }
+  void renderFuelEconomyAvrgGraph(float[] fuelEconomyAvrg,int time){
+    //size is going to be large-ish.
+  }
   void renderCar(int tile){
     //scale(2,2);
     //clear();
@@ -84,7 +87,7 @@ class carDisplay{
     clear();
     background(12);
     pushMatrix();
-    translate(width/2-692, height/2-166);
+    translate(width/2-696, height/2-164);
     scale(2, 2);
     hud.gps.render(y,x,status.direction);
     popMatrix();
@@ -111,12 +114,12 @@ class carDisplay{
     popMatrix();
 
     pushMatrix();
-    translate(width/2-64, height-height/3);
+    translate(width/2-64, height/2-64);
     scale(2, 2);
     hud.speed.render(speed);
     popMatrix();
     pushMatrix();
-    translate(width/2,height/2);
+    translate(width/2-505,height/2-204);
     scale(2,2);
     hud.direction.render(direction);
     popMatrix();

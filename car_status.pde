@@ -10,8 +10,8 @@ class carStatus {
   //otherwise default to minicar i guess.
   float radius, tankCapacity; //radius of wheel, tank size in litres.
   float speed, distance=0; //speed in km/h and distance in km.
-  float fuelConsumed,fuelEfficency;
-  float[] pastFuelEfficency;
+  float fuelConsumed;
+  float[] fuelEconomy, fuelEconomyAvrg;
   vehicleData vehicle;
   carHud hud;
   float dirAngle = 0;
@@ -26,10 +26,11 @@ class carStatus {
       radius = 23;
       tankCapacity = 60;
     }
-    pastFuelEfficency = new float[vehicle.vehicle.getRowCount()];
+    fuelEconomy = new float[vehicle.vehicle.getRowCount()];
+    fuelEconomyAvrg = new float[vehicle.vehicle.getRowCount()];
     secondTick();
   }
-  void updateDistance(float speed){
+  void updateDistance(){ //speed is in this, so no need to feed it in.
     //because each update should be exactly 1 second. "each second, data is read from a file" or something.
     distance += speed/60;
   }
@@ -41,20 +42,24 @@ class carStatus {
   }
   void updateDirection(float prevLat, float prevLong, float nextLat, float nextLong){
 
-
-    //float[] diffPos = {-1,1};
-    float[] diffPos = {nextLat-prevLat,nextLong-prevLong};
+    //float[] diffPos = {1.0,1.0};
+    float[] diffPos = {nextLat-prevLat,nextLong-prevLong}; //sometimes it buggs out during a map jump
+    //because the car teleports. thats normal.
     direction = "";
-    dirAngle = atan(diffPos[1]/diffPos[0]); //just need to so some things with taht.
+    dirAngle = atan(diffPos[1]/diffPos[0])+PI/2; //just need to so some things with tht.
+    //i could rework this so that i have two values, one is the angle and the other is the distance.
+    //remember, soh cah toa... / is distance between the two points, but i have _ and | so:
+    //i have oposite and adj. so i just need arc tan of those values. the matter of what i want for the direction.
+    //this might work, but i think ill need to alter the positions a bit. in the rendering.
     if(Float.isNaN(dirAngle)){
       println("asuid\nasdfasdfasdf\n\nasdasdfasdfasdfn\n\nasdfasdfasdfhfuiashdf");
-      dirAngle = 0;}
+      dirAngle = 0;
+    }
     if(diffPos[0]>0){
-      dirAngle-=PI/2;
+      dirAngle-=PI;
       direction += "N";
     }
     else if(diffPos[0]<0){
-      dirAngle+=PI/2;
       direction += "S";
     }
     if(diffPos[1]>0){
@@ -64,24 +69,36 @@ class carStatus {
     else if(diffPos[1]<0){
       direction += "W";
     }
-    //i could rework this so that i have two values, one is the angle and the other is the distance.
-    //remember, soh cah toa... / is distance between the two points, but i have _ and | so:
-    //i have oposite and adj. so i just need arc tan of those values. the matter of what i want for the direction.
-    //this might work:
     println(dirAngle);
-    println(direction);
+    println(direction); //more debug.
   }
   void updateFuelConsumed(float startFuel, float fuelLevel){
     //fuel at start of trip - fuel at present time in trip.
     fuelConsumed = startFuel-fuelLevel;
   }
+  void updateFuelEconomy(){//because this is based off of the fuel consumed, distance, no need to feed values in
+    fuelEconomy[vehicle.time] = distance/fuelConsumed; //this allows history! woooooo.
+    if(vehicle.time>0){//the below basically calculates the average over time, very fancy.
+      //more complex, we know the prev (fuelAvrg[n-1] is (fuel[0]+fuel[1]+...+fuel[n-1])/(n-1), so n would be ((n-1)*fuelAvrg[n-1] + fuel[n])/n. v fancy.
+      fuelEconomyAvrg[vehicle.time] = (fuelEconomyAvrg[vehicle.time-1]*(vehicle.time-1) + fuelEconomy[vehicle.time])/vehicle.time;
+      if(Float.isNaN(fuelEconomy[vehicle.time]) || Float.isNaN(fuelEconomyAvrg[vehicle.time-1]))
+        fuelEconomyAvrg[vehicle.time] = 0;
+    }
+    else
+      fuelEconomyAvrg[vehicle.time] = fuelEconomy[vehicle.time];
+  }
+  void updateRange(){
+  }
   void secondTick() {
     //println("asdfasdf");
     vehicle.timeStep();
     updateSpeed(vehicle.rpm[vehicle.time], vehicle.gearRatio[vehicle.time]);
-    updateDistance(speed);
+    updateDistance();
     updateFuelConsumed(vehicle.fuelLevel[0],vehicle.fuelLevel[vehicle.time]);
-    println(fuelConsumed);
+    updateFuelEconomy();
+    println(fuelEconomy[vehicle.time]);
+    println(fuelEconomyAvrg[vehicle.time]);
+    //println(fuelConsumed);
     if(vehicle.time>0)
     updateDirection(vehicle.latitude[vehicle.time-1],vehicle.longitude[vehicle.time-1],vehicle.latitude[vehicle.time],vehicle.longitude[vehicle.time]);
     //hudUpdate(vehicle.fuelLevel[vehicle.time], vehicle.rpm[vehicle.time], speed,vehicle.longitude[vehicle.time],vehicle.latitude[vehicle.time]);
