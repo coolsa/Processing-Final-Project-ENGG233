@@ -4,6 +4,7 @@
 //gps would be large, 64x64, or how about segments of 32x32, 3 segments, something like that?
 //96x96 is a good number...
 //now to do this car view part!
+//this is the file that does the rendering of the whole project.
 
 class carDisplay{
   //this one is meant to do the car part. the big ol moving car. that fancy one.
@@ -13,10 +14,10 @@ class carDisplay{
   carHud hud;
   carStatus status;
   carDisplay(String car, int bgCol){
-    
+    status = new carStatus(car);
     hud = new carHud(status.tankCapacity);
     framePos=0;
-    carType = car;
+    carType = status.vehicle.carType;
     render(bgCol);
   }
   void render(int bgCol){
