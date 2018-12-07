@@ -97,7 +97,7 @@ void draw(){
     //i hate myself. the above. i truely hate myself. though it is easy to understand i still hate it so much. it needs to run on framerate though so i cant put it inside. ehh...
     //there are some oddities with the whole thing. like the jumps in the bar graphs.
     //but im going to chock it up to issues in the actual data feed. the gps jumps around inconsistently, so I can only assume how reliable the other values are. (which is not that good)
-    if(second/1000 != millis()/1000){
+    if(second/200 != millis()/200){
       //keeps the view port at 60 fps, but renders the project a bit more frequently. 
       car.status.secondTick();
             //println("asdfasdf");
